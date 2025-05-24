@@ -1,0 +1,108 @@
+table 'classicmodels employees'
+	lineageTag: adc9353f-1eee-4f3b-9a04-c4d17bb435db
+
+	column employeeNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: ec7dbc91-20b4-42bc-941e-6b7d457c94df
+		summarizeBy: none
+		sourceColumn: employeeNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column lastName
+		dataType: string
+		lineageTag: d865fae5-bd3a-4add-84b0-e3325a455620
+		summarizeBy: none
+		sourceColumn: lastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column firstName
+		dataType: string
+		lineageTag: 79d23fde-2c74-4bb0-8caf-1af2fb70bb3d
+		summarizeBy: none
+		sourceColumn: firstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column extension
+		dataType: string
+		lineageTag: 027598ea-e6c2-4aad-8077-4900f33c62a5
+		summarizeBy: none
+		sourceColumn: extension
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: ea273387-9ea3-4922-a059-9cc5415248da
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column reportsTo
+		dataType: int64
+		formatString: 0
+		lineageTag: 2850704a-569e-44ee-a22a-aab59564b398
+		summarizeBy: sum
+		sourceColumn: reportsTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column jobTitle
+		dataType: string
+		lineageTag: cfa70023-0124-4a75-b65c-e6f6a100e69d
+		summarizeBy: none
+		sourceColumn: jobTitle
+
+		annotation SummarizationSetBy = Automatic
+
+	column officeCode
+		dataType: string
+		lineageTag: c93fdeaf-bad8-4af8-8090-792bfc2b5ec6
+		summarizeBy: none
+		sourceColumn: officeCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Merged
+		dataType: string
+		lineageTag: b1ad7c24-3e31-40f4-b3fa-c4b54633e0db
+		summarizeBy: none
+		sourceColumn: Merged
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name '
+		dataType: string
+		lineageTag: 0361901c-2c09-41d3-bb1f-52cc4b2db5d8
+		summarizeBy: none
+		sourceColumn: "Full Name "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name' = CONCATENATE('classicmodels employees'[firstName]&" ",'classicmodels employees'[lastName])
+		lineageTag: 81a6a41c-80a3-4ce3-83e5-d0b3d2678a8d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'classicmodels employees' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("127.0.0.1:3306", "classicmodels", [ReturnSingleDatabase=true]),
+				    classicmodels_employees = Source{[Schema="classicmodels",Item="employees"]}[Data],
+				    #"Removed Blank Rows" = Table.SelectRows(classicmodels_employees, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Removed Blank Rows", "Merged", each Text.Combine({[lastName], " ", [firstName]}), type text),
+				    #"Added Custom" = Table.AddColumn(#"Inserted Merged Column", "Full Name ", each [firstName]& " "& [lastName]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Full Name ", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,50 @@
+table calendar
+	lineageTag: a1803cb4-8592-439b-8138-64f18c48e640
+
+	column Date
+		formatString: General Date
+		lineageTag: c5205a34-a63e-42ee-a8c6-497cbf38cdff
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 67e55638-c206-4370-b865-2fd968a85d83
+			defaultHierarchy: LocalDateTable_17c6d5f9-0398-4bde-a68a-05305d2429fa.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year = YEAR('calendar'[Date])
+		formatString: 0
+		lineageTag: b509e1eb-ddec-4a8d-96d7-a64b0d5d03ac
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month = MONTH('calendar'[Date])
+		formatString: 0
+		lineageTag: 59d0ec24-f8a1-46e2-b4d4-0eaa5737bc9e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day = DAY('calendar'[Date])
+		formatString: 0
+		lineageTag: 4bb8056c-4020-4ea9-9ba6-05ad0f9f79ed
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name' = FORMAT('calendar'[Date],"DDDD")
+		lineageTag: dfcd686f-4633-4ca3-860d-c5c1fc0792da
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition calendar = calculated
+		mode: import
+		source = CALENDARAUTO()
+
+	annotation PBI_Id = 86a1c1b607ab4fd8b6d953e1e22b3816
+

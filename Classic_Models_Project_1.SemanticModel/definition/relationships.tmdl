@@ -1,0 +1,74 @@
+relationship aca77fa2-f1d4-4201-bd06-ac4fc01a4af4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'classicmodels orders'.requiredDate
+	toColumn: LocalDateTable_1b79b34e-de54-4869-8521-dc137ab6be33.Date
+
+relationship 0cd82dfd-9af6-4df4-b2c5-bd117955ff2f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'classicmodels orders'.shippedDate
+	toColumn: LocalDateTable_f5a93e78-0e55-440d-965b-f681e3cf92ea.Date
+
+relationship 2feada27-39e9-4662-9d94-9f97086fa5fb
+	fromColumn: 'classicmodels customers'.salesRepEmployeeNumber
+	toColumn: 'classicmodels employees'.employeeNumber
+
+	annotation PBI_IsFromSource = FS
+
+relationship 34d640c5-de86-4155-90b7-25ab5f667970
+	fromColumn: 'classicmodels orderdetails'.orderNumber
+	toColumn: 'classicmodels orders'.orderNumber
+
+	annotation PBI_IsFromSource = FS
+
+relationship eb253ede-0e54-44b7-998c-f8fd99a07069
+	fromColumn: 'classicmodels orders'.customerNumber
+	toColumn: 'classicmodels customers'.customerNumber
+
+	annotation PBI_IsFromSource = FS
+
+relationship 674e3390-a4d3-4c41-9043-b08c6cf2de49
+	fromColumn: 'classicmodels payments'.customerNumber
+	toColumn: 'classicmodels customers'.customerNumber
+
+	annotation PBI_IsFromSource = FS
+
+relationship 8a89860b-d0d8-4fa7-af43-ca0cb35742b1
+	fromColumn: 'classicmodels products'.productLine
+	toColumn: 'classicmodels productlines'.productLine
+
+	annotation PBI_IsFromSource = FS
+
+relationship d92599a9-d0ae-bbc2-ffbc-aa05755b8f9d
+	fromColumn: 'classicmodels usacustomer'.salesRepEmployeeNumber
+	toColumn: 'classicmodels employees'.employeeNumber
+
+relationship f9d14b6d-05db-46c1-5618-5c5225df041e
+	isActive: false
+	fromColumn: 'classicmodels orders'.customerNumber
+	toColumn: 'classicmodels usacustomer'.customerNumber
+
+relationship 67e55638-c206-4370-b865-2fd968a85d83
+	joinOnDateBehavior: datePartOnly
+	fromColumn: calendar.Date
+	toColumn: LocalDateTable_17c6d5f9-0398-4bde-a68a-05305d2429fa.Date
+
+relationship b79a4ce1-6c78-a773-01c4-89b492f4f284
+	fromColumn: 'classicmodels orders'.orderDate
+	toColumn: calendar.Date
+
+relationship 7bb407c1-0f5f-9269-20ae-d62818e33ff5
+	fromColumn: 'classicmodels payments'.paymentDate
+	toColumn: calendar.Date
+
+relationship 2ccc58f1-53c7-c97c-8e84-65dcd867f0f2
+	fromColumn: 'classicmodels orderdetails'.productCode
+	toColumn: 'classicmodels products'.productCode
+
+	annotation PBI_IsFromSource = FS
+
+relationship 09806ef9-ba51-ef84-1242-0ce76a1af7ed
+	fromColumn: 'classicmodels employees'.officeCode
+	toColumn: 'classicmodels offices'.officeCode
+
+	annotation PBI_IsFromSource = FS
+

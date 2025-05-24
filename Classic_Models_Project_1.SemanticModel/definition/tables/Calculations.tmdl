@@ -1,0 +1,44 @@
+table Calculations
+	lineageTag: d6e2de88-d642-4f35-abf9-f3e88bab378d
+
+	measure AvgInventory = AVERAGE('classicmodels products'[quantityInStock])
+		lineageTag: afbdeb0b-0add-42d3-a4a1-72b7e532ae99
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure StockRotation = DIVIDE([COGS],[AvgInventory],0)
+		formatString: 0
+		lineageTag: ac3581c1-bc85-4c82-aabb-b1c0b4041245
+
+	measure 'Inventory Value' = SUMX('classicmodels products','classicmodels products'[buyPrice]*'classicmodels products'[quantityInStock])
+		lineageTag: 510e46b3-ba02-4ada-b42c-ea669338d473
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Market Value' = SUMX('classicmodels products','classicmodels products'[quantityInStock]*'classicmodels products'[MSRP])
+		lineageTag: bd2df6ce-7772-41b5-8062-55c9a31e1907
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Revenue = SUMX('classicmodels orderdetails','classicmodels orderdetails'[quantityOrdered]*'classicmodels orderdetails'[priceEach])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 5b32d19f-15e9-4033-8282-bedd90c28078
+
+	measure COGS = SUMX('classicmodels orderdetails','classicmodels orderdetails'[quantityOrdered]*RELATED('classicmodels products'[buyPrice]))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 581bc2b6-1f09-49a8-9dc0-f33af7b075b1
+
+	partition Calculations = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

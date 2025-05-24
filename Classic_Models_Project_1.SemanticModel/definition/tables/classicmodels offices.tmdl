@@ -1,0 +1,97 @@
+table 'classicmodels offices'
+	lineageTag: 4330040c-347d-47f4-9dd5-7b95b1e533af
+
+	column officeCode
+		dataType: string
+		lineageTag: 3f690099-a3d2-40e7-a708-88ea7f4e805a
+		summarizeBy: none
+		sourceColumn: officeCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 788c5906-3cec-4ad0-be2c-685e7542250c
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		lineageTag: 30811066-0f22-4d0b-91c1-9da53ba63a91
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column addressLine1
+		dataType: string
+		lineageTag: 620f9817-6db8-48ae-90a6-b499a30be386
+		summarizeBy: none
+		sourceColumn: addressLine1
+
+		annotation SummarizationSetBy = Automatic
+
+	column addressLine2
+		dataType: string
+		lineageTag: a02c86eb-e28a-4915-b426-ace573e7536b
+		summarizeBy: none
+		sourceColumn: addressLine2
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 0ce6808b-c6a4-4aa4-b31c-ab39565a99b1
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: e10f8cba-9dc2-4b17-bd3f-f8810b072816
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column postalCode
+		dataType: string
+		lineageTag: c2f25b01-a8e4-49fb-971a-5590891c7403
+		summarizeBy: none
+		sourceColumn: postalCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory
+		dataType: string
+		lineageTag: 476529cb-8687-400a-9a2a-a21df57854a9
+		summarizeBy: none
+		sourceColumn: territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column officeLocation
+		dataType: string
+		lineageTag: 7a3b2d0f-58a1-4773-8a0d-43ff95f1c26c
+		summarizeBy: none
+		sourceColumn: officeLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'classicmodels offices' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("127.0.0.1:3306", "classicmodels", [ReturnSingleDatabase=true]),
+				    classicmodels_offices = Source{[Schema="classicmodels",Item="offices"]}[Data],
+				    #"Removed Blank Rows" = Table.SelectRows(classicmodels_offices, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,48 @@
+table 'classicmodels productlines'
+	lineageTag: d256359e-9550-43f1-9568-d6d43170a472
+
+	column productLine
+		dataType: string
+		lineageTag: 0c90cdd3-b215-4e91-9086-20607377b253
+		summarizeBy: none
+		sourceColumn: productLine
+
+		annotation SummarizationSetBy = Automatic
+
+	column textDescription
+		dataType: string
+		lineageTag: 762a2aae-679a-4eb2-978e-687d1e0efcf7
+		summarizeBy: none
+		sourceColumn: textDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column htmlDescription
+		dataType: string
+		lineageTag: 35990200-dc3a-4730-b1d9-76b680843fb3
+		summarizeBy: none
+		sourceColumn: htmlDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Indirect Cost' = IF('classicmodels productlines'[productLine]="Classic Cars",.10,.15)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 00ac2a48-0cfe-4d53-901f-c6ed4b45938b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'classicmodels productlines' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("127.0.0.1:3306", "classicmodels", [ReturnSingleDatabase=true]),
+				    classicmodels_productlines = Source{[Schema="classicmodels",Item="productlines"]}[Data],
+				    #"Removed Blank Rows" = Table.SelectRows(classicmodels_productlines, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,40 @@
+table productLineTax
+	isHidden
+	lineageTag: 0c808c02-d175-48ea-a82e-078a67494577
+
+	column 'product line'
+		isHidden
+		lineageTag: 8fd8eeae-3218-45d1-b956-f18aa4ab7ec8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [product line]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tax Percentage'
+		isHidden
+		lineageTag: 4c6275be-713f-46ca-9085-e14ac346d7f3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Tax Percentage]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition productLineTax = calculated
+		mode: import
+		source =
+				DATATABLE(
+				    "product line",STRING,
+				    "Tax Percentage",DOUBLE,
+				    {
+				        {"Classic Cars",.1},
+				        {"Motorcycles",.15},
+				        {"Planes",.12},
+				        {"Trains",.08}
+				    }
+				)
+
+	annotation PBI_Id = 794a496067a64675a074e00a362861c1
+

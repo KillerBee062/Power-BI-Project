@@ -1,0 +1,53 @@
+table 'classicmodels payments'
+	lineageTag: 91b9e536-025a-4b52-aefa-392bcedb6ada
+
+	column checkNumber
+		dataType: string
+		lineageTag: 135a6619-ed91-447c-8d33-be777f8a64a7
+		summarizeBy: none
+		sourceColumn: checkNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column paymentDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 61fe5ee5-8ffc-4951-9673-c11dd8c410dd
+		summarizeBy: none
+		sourceColumn: paymentDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		lineageTag: 1dd941a3-751e-451f-8961-5e0b3be9bb9f
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customerNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: bbaf5ac6-635e-43c1-a3e0-63d0a348faa8
+		summarizeBy: none
+		sourceColumn: customerNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'classicmodels payments' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("127.0.0.1:3306", "classicmodels", [ReturnSingleDatabase=true]),
+				    classicmodels_payments = Source{[Schema="classicmodels",Item="payments"]}[Data],
+				    #"Removed Blank Rows" = Table.SelectRows(classicmodels_payments, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

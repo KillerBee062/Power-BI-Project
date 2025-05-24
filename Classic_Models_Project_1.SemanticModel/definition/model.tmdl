@@ -1,0 +1,36 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["classicmodels usacustomer","classicmodels customers","classicmodels employees","classicmodels offices","classicmodels orderdetails","classicmodels orders","classicmodels payments","classicmodels productlines","classicmodels products","Calculations","Image"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.142.928.0 (25.04)+de52df9f0bb74ad93a80d89c52d63fe6d07e0e1b
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table 'classicmodels usacustomer'
+ref table 'classicmodels customers'
+ref table 'classicmodels employees'
+ref table 'classicmodels offices'
+ref table 'classicmodels orderdetails'
+ref table 'classicmodels orders'
+ref table DateTableTemplate_8cc3b959-4d4f-433f-841f-63c9a2f7e6f8
+ref table LocalDateTable_1b79b34e-de54-4869-8521-dc137ab6be33
+ref table LocalDateTable_f5a93e78-0e55-440d-965b-f681e3cf92ea
+ref table 'classicmodels payments'
+ref table 'classicmodels productlines'
+ref table 'classicmodels products'
+ref table calendar
+ref table LocalDateTable_17c6d5f9-0398-4bde-a68a-05305d2429fa
+ref table Calculations
+ref table productLineTax
+ref table Image
+
+ref cultureInfo en-US
+

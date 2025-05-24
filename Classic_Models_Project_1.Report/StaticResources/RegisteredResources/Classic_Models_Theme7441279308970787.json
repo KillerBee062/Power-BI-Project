@@ -1,0 +1,33 @@
+{
+  "name": "Classic Models Theme",
+  "textClasses": {
+    "label": {
+      "fontFace": "wf_standard-font, helvetica, arial, sans-serif",
+      "fontSize": 12
+    }
+  },
+  "visualStyles": {
+    "page": {
+      "*": {
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#6E6E6E"
+              }
+            }
+          }
+        ],
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#E0E0E0"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
