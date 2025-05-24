@@ -28,6 +28,9 @@ table Calculations
 		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: 581bc2b6-1f09-49a8-9dc0-f33af7b075b1
 
+	measure 'Version Check' = "TEXT UPDATED"
+		lineageTag: 7b5809f4-4627-46b2-9de0-0a9785e29511
+
 	partition Calculations = m
 		mode: import
 		source =
